@@ -10,76 +10,128 @@ class ExprListener(ParseTreeListener):
 
     # Enter a parse tree produced by ExprParser#prog.
     def enterProg(self, ctx:ExprParser.ProgContext):
-        for i in range(ctx.getChildCount()):
-            print(self.visit(ctx.getChild(i)))
+        pass
 
     # Exit a parse tree produced by ExprParser#prog.
     def exitProg(self, ctx:ExprParser.ProgContext):
         pass
 
 
-    # Enter a parse tree produced by ExprParser#par.
-    def enterPar(self, ctx:ExprParser.ParContext):
+    # Enter a parse tree produced by ExprParser#ifStatement.
+    def enterIfStatement(self, ctx:ExprParser.IfStatementContext):
         pass
 
-    # Exit a parse tree produced by ExprParser#par.
-    def exitPar(self, ctx:ExprParser.ParContext):
-        return self.visit(ctx.expr())
-
-
-    # Enter a parse tree produced by ExprParser#add.
-    def enterAdd(self, ctx:ExprParser.AddContext):
+    # Exit a parse tree produced by ExprParser#ifStatement.
+    def exitIfStatement(self, ctx:ExprParser.IfStatementContext):
         pass
 
-    # Exit a parse tree produced by ExprParser#add.
-    def exitAdd(self, ctx:ExprParser.AddContext):
-        left = self.visit(ctx.expr(0))
-        right = self.visit(ctx.expr(1))
-        if ctx.op.text == '+':
-            return left + right
-        else:
-            return left - right
-       
 
-    # Enter a parse tree produced by ExprParser#oct.
-    def enterOct(self, ctx:ExprParser.OctContext):
+    # Enter a parse tree produced by ExprParser#writeStatement.
+    def enterWriteStatement(self, ctx:ExprParser.WriteStatementContext):
         pass
 
-    # Exit a parse tree produced by ExprParser#oct.
-    def exitOct(self, ctx:ExprParser.OctContext):
-        return int(ctx.OCT().getText(), 8)
-
-
-    # Enter a parse tree produced by ExprParser#mul.
-    def enterMul(self, ctx:ExprParser.MulContext):
+    # Exit a parse tree produced by ExprParser#writeStatement.
+    def exitWriteStatement(self, ctx:ExprParser.WriteStatementContext):
         pass
 
-    # Exit a parse tree produced by ExprParser#mul.
-    def exitMul(self, ctx:ExprParser.MulContext):
-        left = self.visit(ctx.expr(0))
-        right = self.visit(ctx.expr(1))
-        if ctx.op.text == '*':
-            return left * right
-        else:
-            return left // right
 
-
-    # Enter a parse tree produced by ExprParser#hexa.
-    def enterHexa(self, ctx:ExprParser.HexaContext):
+    # Enter a parse tree produced by ExprParser#readStatement.
+    def enterReadStatement(self, ctx:ExprParser.ReadStatementContext):
         pass
 
-    # Exit a parse tree produced by ExprParser#hexa.
-    def exitHexa(self, ctx:ExprParser.HexaContext):
-        return int(ctx.HEXA().getText(), 16)
-
-
-    # Enter a parse tree produced by ExprParser#int.
-    def enterInt(self, ctx:ExprParser.IntContext):
+    # Exit a parse tree produced by ExprParser#readStatement.
+    def exitReadStatement(self, ctx:ExprParser.ReadStatementContext):
         pass
 
-    # Exit a parse tree produced by ExprParser#int.
-    def exitInt(self, ctx:ExprParser.IntContext):
-        return int(ctx.INT().getText())
+
+    # Enter a parse tree produced by ExprParser#forStatement.
+    def enterForStatement(self, ctx:ExprParser.ForStatementContext):
+        pass
+
+    # Exit a parse tree produced by ExprParser#forStatement.
+    def exitForStatement(self, ctx:ExprParser.ForStatementContext):
+        pass
+
+
+    # Enter a parse tree produced by ExprParser#doWhileStatement.
+    def enterDoWhileStatement(self, ctx:ExprParser.DoWhileStatementContext):
+        pass
+
+    # Exit a parse tree produced by ExprParser#doWhileStatement.
+    def exitDoWhileStatement(self, ctx:ExprParser.DoWhileStatementContext):
+        pass
+
+
+    # Enter a parse tree produced by ExprParser#whileStatement.
+    def enterWhileStatement(self, ctx:ExprParser.WhileStatementContext):
+        pass
+
+    # Exit a parse tree produced by ExprParser#whileStatement.
+    def exitWhileStatement(self, ctx:ExprParser.WhileStatementContext):
+        pass
+
+
+    # Enter a parse tree produced by ExprParser#block.
+    def enterBlock(self, ctx:ExprParser.BlockContext):
+        pass
+
+    # Exit a parse tree produced by ExprParser#block.
+    def exitBlock(self, ctx:ExprParser.BlockContext):
+        pass
+
+
+    # Enter a parse tree produced by ExprParser#statement.
+    def enterStatement(self, ctx:ExprParser.StatementContext):
+        pass
+
+    # Exit a parse tree produced by ExprParser#statement.
+    def exitStatement(self, ctx:ExprParser.StatementContext):
+        pass
+
+
+    # Enter a parse tree produced by ExprParser#cond.
+    def enterCond(self, ctx:ExprParser.CondContext):
+        pass
+
+    # Exit a parse tree produced by ExprParser#cond.
+    def exitCond(self, ctx:ExprParser.CondContext):
+        pass
+
+
+    # Enter a parse tree produced by ExprParser#comp.
+    def enterComp(self, ctx:ExprParser.CompContext):
+        pass
+
+    # Exit a parse tree produced by ExprParser#comp.
+    def exitComp(self, ctx:ExprParser.CompContext):
+        pass
+
+
+    # Enter a parse tree produced by ExprParser#assignStatement.
+    def enterAssignStatement(self, ctx:ExprParser.AssignStatementContext):
+        pass
+
+    # Exit a parse tree produced by ExprParser#assignStatement.
+    def exitAssignStatement(self, ctx:ExprParser.AssignStatementContext):
+        pass
+
+
+    # Enter a parse tree produced by ExprParser#operationStatement.
+    def enterOperationStatement(self, ctx:ExprParser.OperationStatementContext):
+        pass
+
+    # Exit a parse tree produced by ExprParser#operationStatement.
+    def exitOperationStatement(self, ctx:ExprParser.OperationStatementContext):
+        pass
+
+
+    # Enter a parse tree produced by ExprParser#variable.
+    def enterVariable(self, ctx:ExprParser.VariableContext):
+        pass
+
+    # Exit a parse tree produced by ExprParser#variable.
+    def exitVariable(self, ctx:ExprParser.VariableContext):
+        pass
 
 
 

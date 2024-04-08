@@ -91,7 +91,7 @@ def serializedATN():
         201,207,218,223,1,6,0,0
     ]
 
-class ExprLexer(Lexer):
+class variableLexer(Lexer):
 
     atn = ATNDeserializer().deserialize(serializedATN())
 

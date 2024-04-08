@@ -14,33 +14,68 @@ class ExprVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by ExprParser#par.
-    def visitPar(self, ctx:ExprParser.ParContext):
+    # Visit a parse tree produced by ExprParser#ifStatement.
+    def visitIfStatement(self, ctx:ExprParser.IfStatementContext):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by ExprParser#add.
-    def visitAdd(self, ctx:ExprParser.AddContext):
+    # Visit a parse tree produced by ExprParser#writeStatement.
+    def visitWriteStatement(self, ctx:ExprParser.WriteStatementContext):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by ExprParser#oct.
-    def visitOct(self, ctx:ExprParser.OctContext):
+    # Visit a parse tree produced by ExprParser#readStatement.
+    def visitReadStatement(self, ctx:ExprParser.ReadStatementContext):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by ExprParser#mul.
-    def visitMul(self, ctx:ExprParser.MulContext):
+    # Visit a parse tree produced by ExprParser#forStatement.
+    def visitForStatement(self, ctx:ExprParser.ForStatementContext):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by ExprParser#hexa.
-    def visitHexa(self, ctx:ExprParser.HexaContext):
+    # Visit a parse tree produced by ExprParser#doWhileStatement.
+    def visitDoWhileStatement(self, ctx:ExprParser.DoWhileStatementContext):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by ExprParser#int.
-    def visitInt(self, ctx:ExprParser.IntContext):
+    # Visit a parse tree produced by ExprParser#whileStatement.
+    def visitWhileStatement(self, ctx:ExprParser.WhileStatementContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by ExprParser#block.
+    def visitBlock(self, ctx:ExprParser.BlockContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by ExprParser#statement.
+    def visitStatement(self, ctx:ExprParser.StatementContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by ExprParser#cond.
+    def visitCond(self, ctx:ExprParser.CondContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by ExprParser#comp.
+    def visitComp(self, ctx:ExprParser.CompContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by ExprParser#assignStatement.
+    def visitAssignStatement(self, ctx:ExprParser.AssignStatementContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by ExprParser#operationStatement.
+    def visitOperationStatement(self, ctx:ExprParser.OperationStatementContext):
+        return self.visitChildren(ctx)
+
+
+    # Visit a parse tree produced by ExprParser#variable.
+    def visitVariable(self, ctx:ExprParser.VariableContext):
         return self.visitChildren(ctx)
 
 
