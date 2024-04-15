@@ -1,0 +1,17 @@
+push I 0
+save x
+push I 0
+push I 5
+push I 3
+gt 
+push I 5
+push I 3
+gt 
+push I 5
+save x
+load x
+pop
+push I 5
+push I 3
+gt 
+push I 5
