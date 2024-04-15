@@ -3,71 +3,80 @@ grammar Expr;
 /** The start rule; begin parsing here. */
 prog: (statement)+;
 
-ifStatement: 'if' '(' cond ')' (block|statement) ('else' (block | statement))? ;
-writeStatement: 'write' variable (',' (variable| cond | ('!' '(' cond ')') ))* ;
-readStatement: 'read' ID (',' ID)* ;
-forStatement: 'for' '(' assignStatement ';' cond ';' operationStatement ')' (block|statement) ('else' (block | statement))? ;
-doWhileStatement: 'do' block 'while' '(' cond ')' ;
-whileStatement: 'while' '(' cond ')' block ;
 
-block: '{' statement* '}' 
-    | '{' '}' 
-    ;
 
-statement: ifStatement
-    | variable ';'
-    | writeStatement ';'
-    | readStatement ';'
-    | assignStatement ';'
-    | forStatement
-    | doWhileStatement
-    | whileStatement
-    | operationStatement ';'
-    ;
+type : 'int' | 'float' | 'string' | 'bool';
+read: 'read' variable (',' variable)* SEMICOLON;
+write: 'write' expression (',' expression )* SEMICOLON;
+block:  '{' statement* '}';
+ifStatement: 'if' '(' expression ')' statement ('else' statement)?;
+whileStatement: 'while' '(' expression ')' (statement|block);
+forStatement: 'for' '(' assignment SEMICOLON expression SEMICOLON assignment ')' (statement|block);
+variable: ID;
 
-cond: variable (comp variable)* 
-    | variable
-    ;
+statement: read 
+        | write 
+        | ifStatement 
+        | whileStatement 
+        | assignment SEMICOLON
+        | forStatement
+        | block
+        |assignmentType SEMICOLON
+        ;
 
-comp: EQ | NEQ | LT | GT | LE | RE | AND | OR ;
+assignmentType: type variable ('=' expression)? (',' variable ('=' expression)?)*;
 
-assignStatement: 'int' ID ('=' INT)? (',' ID ('=' INT)?)* 
-                | 'float' ID ('=' FLOAT)? (',' ID ('=' FLOAT)?)* 
-                | 'string' ID ('=' STRING)? (',' ID ('=' STRING)?)* 
-                | 'bool' ID ('=' BOOL)? (',' ID ('=' BOOL)?)* 
-                ;
+assignment: variable '=' expression     
+        | variable '=' assignment       
+        ;      
+expression:
+         expression PLUS expression            
+        | expression MINUS expression              
+        | expression MULT expression               
+        | expression DIV expression                 
+        | expression MOD expression                   
+        | expression LESSTHAN expression            
+        | expression LESSTHANEQUAL expression          
+        | expression GREATERTHAN expression          
+        | expression GREATERTHANEQUAL expression    
+        | expression EQUAL expression                
+        | expression NOTEQUAL expression             
+        | expression AND expression                    
+        | expression OR expression 
+        | expression '.' expression
+        | expression '?' expression ':' expression
+        | '-' expression                
+        | NOT expression                              
+        | '(' expression ')'                        
+        | INT                                          
+        | FLOAT                                        
+        | STRING                                        
+        | BOOL                                          
+        | variable                                     
+        ;
 
-operationStatement: ID (ADD | MUL | DIV | SUB | MOD)? '=' variable 
-                | ID '=' variable ((ADD | MUL | DIV | SUB | MOD| '=') variable)+
-                | ID (ADD | MUL | DIV | SUB | MOD)? variable
-    ;
 
-ADD: '+';
-SUB: '-';
-MUL: '*';
+MOD : '%';
+PLUS: '+';
+MINUS: '-';
+MULT: '*';
 DIV: '/';
-MOD: '%';
+EQUAL: '==';
+NOTEQUAL: '!=';
+LESSTHAN: '<';
+LESSTHANEQUAL: '<=';
+GREATERTHAN: '>';
+GREATERTHANEQUAL: '>=';
 AND: '&&';
 OR: '||';
 NOT: '!';
-EQ: '==';
-NEQ: '!=';
-LT: '<';
-GT: '>';
-LE: '<=';
-RE: '>=';
 
-variable: ID
-    | INT
-    | FLOAT
-    | BOOL
-    | STRING
-    | '(' variable ')'
-    ;
-
-ID: [a-zA-Z]+;
+SEMICOLON: ';';
+COMMA: ',';
+ID: [a-zA-Z] [a-zA-Z0-9]*;
 INT: [0-9]+;
-STRING: '"' .*? '"' ;
 FLOAT: [0-9]+ '.' [0-9]+;
+STRING: '"' ~'"'* '"';
 BOOL: 'true' | 'false';
-WS: [ \t\r\n]+ -> skip;
+WS: [ \t\n\r]+ -> skip;
+COMMENT: '//' ~[\r\n]* -> skip;
