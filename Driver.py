@@ -15,8 +15,18 @@ def main(argv):
         print("Number of syntax errors: ", parser.getNumberOfSyntaxErrors())
     else:
         visitor = VisitorInterp()
-        print(visitor.visit(tree))
-    
+        code = visitor.visit(tree)
+        fileta = open("output.txt", "w")
+        last = ' '
+        for line in code:
+            line = str(line)[:-1]
+            line = str(line)[1:]
+            line = str(line).replace(',', '')
+            line = str(line).replace('\'', '')
+            if str(last) == line:
+                continue
+            last = line
+            fileta.write(str(line) + '\n')
 
 if __name__ == '__main__':
     main(sys.argv)
