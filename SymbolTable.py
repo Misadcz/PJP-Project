@@ -20,29 +20,29 @@ class SymbolTable:
         if name in self.memory:
             print("Error: variable "+name+" already declared")
         else:
-            if type == Type.INT:
+            if type == 'int':
                 self.memory[name] = (name,Type.INT,0)
-            if type == Type.FLOAT:
+            if type == 'float':
                 self.memory[name] = (name,Type.FLOAT,0.0)
-            if type == Type.STRING:
+            if type == 'string':
                 self.memory[name] = (name,Type.STRING,"")
-            if type == Type.BOOL:
-                self.memory[name] = (name,Type.BOOL,False)
+            if type == 'bool':
+                self.memory[name] = (name,Type.BOOL,True)
                 
     def addSymbol(self, name, type,value):
         if name in self.memory:
             print("Error: variable "+name+" already declared")
         else:
-            if type == Type.INT:
+            if type == 'int':
                 self.memory[name] = (name,Type.INT,int(value))
-            if type == Type.FLOAT:
+            if type == 'float':
                 self.memory[name] = (name,Type.FLOAT,float(value))
-            if type == Type.STRING:
+            if type == 'string':
                 if value[0] == '"':
                     value = str(value)[1:]
                     value = str(value)[:len(value)-1]
                 self.memory[name] = (name,Type.STRING,str(value))
-            if type == Type.BOOL:
+            if type == 'bool':
                 self.memory[name] = (name,Type.BOOL,bool(value))
             
     

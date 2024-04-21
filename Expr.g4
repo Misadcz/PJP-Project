@@ -1,59 +1,46 @@
 grammar Expr;
 
-/** The start rule; begin parsing here. */
 prog: (statement)+;
 
-
-
-type : 'int' | 'float' | 'string' | 'bool';
-read: 'read' variable (',' variable)* SEMICOLON;
-write: 'write' expression (',' expression )* SEMICOLON;
-block:  '{' statement* '}';
-ifStatement: 'if' '(' expression ')' statement ('else' statement)?;
-whileStatement: 'while' '(' expression ')' (statement|block);
-forStatement: 'for' '(' assignment SEMICOLON expression SEMICOLON assignment ')' (statement|block);
-variable: ID;
-
-statement: read 
-        | write 
-        | ifStatement 
-        | whileStatement 
-        | assignment SEMICOLON
-        | forStatement
-        | block
-        |assignmentType SEMICOLON
+type : 'int' | 'float' | 'string' | 'bool';                                     
+variable: ID                                                                         #id
+        ;
+literal: INT                                                                         #int
+        | FLOAT                                                                      #float
+        | STRING                                                                     #string            
+        | BOOL                                                                       #bool
         ;
 
-assignmentType: type variable ('=' expression)? (',' variable ('=' expression)?)*;
-
-assignment: variable '=' expression     
-        | variable '=' assignment       
-        ;      
-expression:
-         expression PLUS expression            
-        | expression MINUS expression              
-        | expression MULT expression               
-        | expression DIV expression                 
-        | expression MOD expression                   
-        | expression LESSTHAN expression            
-        | expression LESSTHANEQUAL expression          
-        | expression GREATERTHAN expression          
-        | expression GREATERTHANEQUAL expression    
-        | expression EQUAL expression                
-        | expression NOTEQUAL expression             
-        | expression AND expression                    
-        | expression OR expression 
-        | expression '.' expression
-        | expression '?' expression ':' expression
-        | '-' expression                
-        | NOT expression                              
-        | '(' expression ')'                        
-        | INT                                          
-        | FLOAT                                        
-        | STRING                                        
-        | BOOL                                          
-        | variable                                     
+statement:
+        SEMICOLON                                                                               #empty
+        | type variable (',' variable)* SEMICOLON                                               #declaration
+        | expression SEMICOLON                                                                  #expr
+        | 'read' variable (',' variable)* SEMICOLON                                             #read
+        | 'write' expression (',' expression )* SEMICOLON                                       #write
+        | '{' statement* '}'                                                                    #block                              
+        | 'if' '(' expression ')' statement ('else' statement)?                                 #if
+        | 'while' '(' expression ')' (statement)                                                #while
+        | 'for' '(' expression SEMICOLON expression SEMICOLON expression ')' (statement)        #for
         ;
+
+
+expression:     
+        literal                                                 #lit                                         
+        | variable                                              #var                                       
+        | expression AND expression                             #and
+        | expression OR expression                              #or
+        | expression op=(EQUAL | NOTEQUAL) expression           #equalnotequal
+        | expression op=(LESSTHAN | GREATERTHAN) expression     #compare
+        | expression op=(MULT | DIV | MOD) expression           #mulDiv
+        | expression op=(PLUS | MINUS | '.') expression         #addSub
+        | variable '=' expression                               #assignment
+        | NOT expression                                        #not
+        | '(' expression ')'                                    #parenthesis
+        | MINUS expression                                      #unaryminus
+        | expression '?' expression ':' expression              #ternary
+        ;
+
+
 
 
 MOD : '%';
@@ -64,15 +51,14 @@ DIV: '/';
 EQUAL: '==';
 NOTEQUAL: '!=';
 LESSTHAN: '<';
-LESSTHANEQUAL: '<=';
 GREATERTHAN: '>';
-GREATERTHANEQUAL: '>=';
 AND: '&&';
 OR: '||';
 NOT: '!';
 
 SEMICOLON: ';';
 COMMA: ',';
+
 ID: [a-zA-Z] [a-zA-Z0-9]*;
 INT: [0-9]+;
 FLOAT: [0-9]+ '.' [0-9]+;
@@ -80,3 +66,5 @@ STRING: '"' ~'"'* '"';
 BOOL: 'true' | 'false';
 WS: [ \t\n\r]+ -> skip;
 COMMENT: '//' ~[\r\n]* -> skip;
+
+
