@@ -52,9 +52,10 @@ class VisitorInterp(ExprVisitor):
 
     def visitAddSub(self, ctx: ExprParser.AddSubContext):
         left = self.visit(ctx.expression(0))
+        if type(left) == int and ctx.expression(1).getText().__contains__('.'):
+                self.machine.code.append('itof')
         right = self.visit(ctx.expression(1))
-        if type(left) == float or type(right) == float:
-            if type(left) == int or  type(right) == int:
+        if type(right) == int and ctx.expression(0).getText().__contains__('.'):
                 self.machine.code.append('itof')
         if ctx.op.type == ExprParser.PLUS:
             self.machine.code.append('add')
@@ -77,9 +78,10 @@ class VisitorInterp(ExprVisitor):
         
     def visitMulDiv(self, ctx: ExprParser.MulDivContext):
         left = self.visit(ctx.expression(0))
+        if type(left) == int and ctx.expression(1).getText().__contains__('.'):
+                self.machine.code.append('itof')
         right = self.visit(ctx.expression(1))
-        if type(left) == float or type(right) == float:
-            if type(left) == int or  type(right) == int:
+        if type(right) == int and ctx.expression(0).getText().__contains__('.'):
                 self.machine.code.append('itof')
         if ctx.op.type == ExprParser.MULT:
             self.machine.code.append('mul')
@@ -122,7 +124,6 @@ class VisitorInterp(ExprVisitor):
             self.symbol_table.setSymbol(ctx.variable().getText(), value)
         self.machine.code.append('save '+ctx.variable().getText())
         self.machine.code.append('load '+ctx.variable().getText())
-        #what if i=j=k=55, there will be pop just with i
         
         if ctx.expression().getText().count('=') > 1:
             self.machine.code.append('pop')
@@ -203,10 +204,15 @@ class VisitorInterp(ExprVisitor):
         return None
 
     def visitFor(self, ctx: ExprParser.ForContext):
-        self.visit(ctx.expression())
-        while self.visit(ctx.expression()):
-            self.visit(ctx.statement())
-            self.visit(ctx.expression())
+        self.visit(ctx.expression(0))
+        self.machine.code.append('label ' + str(self.label_count))
+        self.visit(ctx.expression(1))
+        self.machine.code.append('fjmp ' + str(self.label_count+1))
+        self.visit(ctx.statement())
+        self.visit(ctx.expression(2))
+        self.machine.code.append('jmp ' + str(self.label_count))
+        self.machine.code.append('label ' + str(self.label_count+1))
+        self.label_count += 2
         return None
 
     def visitDeclaration(self, ctx: ExprParser.DeclarationContext):
@@ -219,7 +225,7 @@ class VisitorInterp(ExprVisitor):
             elif type_ == 'float':
                 self.machine.code.append('push '+'F '+'0.0')
             elif type_ == 'bool':
-                self.machine.code.append('push '+'B '+'true')
+                self.machine.code.append('push '+'B '+'false')
             elif type_ == 'string':
                 self.machine.code.append('push '+'S '+'""')
 
@@ -273,9 +279,16 @@ class VisitorInterp(ExprVisitor):
         return None
     
     def visitTernary(self, ctx: ExprParser.TernaryContext):
-        if self.visit(ctx.expression(0)):
-            return self.visit(ctx.expression(1))
-        return self.visit(ctx.expression(2))
+        self.visit(ctx.expression(0))
+        self.machine.code.append('fjmp ' + str(self.jmp_count))
+        self.visit(ctx.expression(1))
+        self.machine.code.append('jmp ' + str(self.jmp_count+1))
+        self.machine.code.append('label ' + str(self.jmp_count))
+        self.visit(ctx.expression(2))
+        self.machine.code.append('label ' + str(self.jmp_count+1))
+        self.jmp_count += 2
+        return None
+        
     
     def visitEqualnotequal(self, ctx: ExprParser.EqualnotequalContext):
         left = self.visit(ctx.expression(0))
